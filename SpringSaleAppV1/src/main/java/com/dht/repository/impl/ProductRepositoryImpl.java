@@ -65,7 +65,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
             q.where(predicates.toArray(Predicate[]::new));
         }
-        
+
         q.orderBy(b.desc(root.get("id")));
 
         Query query = session.createQuery(q);
@@ -84,12 +84,13 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     }
 
-//    public Product getProductById(int id) {
-//        try (Session session = HibernateUtils.getFACTORY().openSession()) {
-//            return session.get(Product.class, id);
-//        }
-//    }
-//    
+    @Override
+    public Product getProductById(int id) {
+        Session session = this.factory.getObject().getCurrentSession();
+        return session.get(Product.class, id);
+    }
+
+    @Override
     public void addOrUpdateProduct(Product p) {
         Session session = this.factory.getObject().getCurrentSession();
         if (p.getId() != null) {
@@ -99,11 +100,11 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
 
     }
-//    
-//    public void deleteProduct(int id) {
-//        try (Session session = HibernateUtils.getFACTORY().openSession()) { 
-//            Product p = this.getProductById(id);
-//            session.remove(p);
-//        }
-//    }
+    
+    @Override
+    public void deleteProduct(int id) {
+        Session session = this.factory.getObject().getCurrentSession();
+        Product p = this.getProductById(id);
+        session.remove(p);
+    }
 }

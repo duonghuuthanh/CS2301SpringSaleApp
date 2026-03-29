@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository prodRepo;
     @Autowired
     private Cloudinary cloudinary;
+    
 
     @Override
     public List<Product> getProducts(Map<String, String> params) {
@@ -37,13 +39,24 @@ public class ProductServiceImpl implements ProductService {
     public void addOrUpdateProduct(Product p) {
         if (!p.getFile().isEmpty()) {
             try {
-                Map res = this.cloudinary.uploader().upload(p.getFile().getBytes(), ObjectUtils.asMap("resource_type", "auto"));
+                Map res = this.cloudinary.uploader().upload(p.getFile().getBytes(), 
+                        ObjectUtils.asMap("resource_type", "auto"));
                 p.setImage(res.get("secure_url").toString());
             } catch (IOException ex) {
                 Logger.getLogger(ProductServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         this.prodRepo.addOrUpdateProduct(p);
+    }
+
+    @Override
+    public Product getProductById(int id) {
+        return this.prodRepo.getProductById(id);
+    }
+
+    @Override
+    public void deleteProduct(int id) {
+        this.prodRepo.deleteProduct(id);
     }
     
 }

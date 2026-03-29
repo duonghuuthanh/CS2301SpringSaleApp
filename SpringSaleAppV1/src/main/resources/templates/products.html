@@ -32,7 +32,15 @@
                 <input type="file" class="form-control" id="file" th:field="*{file}" />
             </div>
             
-            <button class="btn btn-success mb-2">Thêm sản phẩm</button>
+            <div class="mb-3 mt-3" th:if="${product.image != null}">
+                <img th:src="${product.image}" width="200" />
+            </div>
+            
+            <button th:if="${product.id == null}" class="btn btn-success mb-2">Thêm sản phẩm</button>
+            <button th:unless="${product.id == null}" class="btn btn-success mb-2">Cập nhật sản phẩm</button>
+            
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{image}" />
         </form>
     </section>
 
