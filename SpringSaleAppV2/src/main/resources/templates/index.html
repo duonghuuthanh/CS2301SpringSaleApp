@@ -1,7 +1,7 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Trang chu</title>
+        <title>Trang chủ</title>
         <th:block th:replace="base :: resources"></th:block>
     </head>
     <body>
@@ -26,8 +26,8 @@
                         <td th:text="${p.name}"></td>
                         <td th:text="${p.price} + ' VNĐ'"></td>
                         <td>
-                            <a href="#" class="btn btn-info">Cập nhật</a>
-                            <button class="btn btn-danger">Xóa</button>
+                            <a th:href="@{/admin/products/} + ${p.id}" class="btn btn-info">Cập nhật</a>
+                            <button class="btn btn-danger" th:onclick="'deleteProduct(\'' + @{/api/products/} + ${p.id} + '\')'">Xóa</button>
                         </td>
                     </tr>
                 </tbody>
@@ -35,5 +35,7 @@
         </section>
         
         <div th:replace="base :: footer"></div>
+        
+        <script th:src="@{/js/script.js}"></script>
     </body>
 </html>

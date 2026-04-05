@@ -1,7 +1,7 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Quan tri san pham</title>
+        <title>Quản lý sản phẩm</title>
     <th:block th:replace="base :: resources"></th:block>
 </head>
 <body>
@@ -22,8 +22,15 @@
             </div>
             <div class="mb-3 mt-3">
                 <input type="file" class="form-control" th:field="*{file}" placeholder="anh san pham" />
+                
+                <img th:if="${product.image != null}" th:src="${product.image}" width="200" />
             </div>
-            <button type="submit" class="btn btn-primary mb-2">Thêm sản phẩm</button>
+            
+            <button th:if="${product.id == null}" type="submit" class="btn btn-primary mb-2">Thêm sản phẩm</button>
+            <button th:unless="${product.id == null}" type="submit" class="btn btn-primary mb-2">Cập nhật sản phẩm</button>
+            
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{image}" />
         </form>
     </section>
 

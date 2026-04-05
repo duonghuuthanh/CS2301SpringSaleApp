@@ -88,13 +88,15 @@ public class ProductRepositoryImpl implements ProductRepository {
         return query.getResultList();
 
     }
+    
+    @Override
+    public Product getProductById(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        return s.get(Product.class, id);
 
-//    public Product getProductById(int id) {
-//        try (Session s = HibernateUtils.getFactory().openSession()) {
-//            return s.get(Product.class, id);
-//        }
-//    }
-//    
+    }
+    
+
     @Override
     public void addOrUpdateProduct(Product p) {
         Session s = this.factory.getObject().getCurrentSession();
@@ -105,11 +107,11 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
 
     }
-//    
-//    public void deleteProduct(int id) {
-//        try (Session s = HibernateUtils.getFactory().openSession()) {
-//            Product p = this.getProductById(id);
-//            s.remove(p);
-//        }
-//    }
+    
+    @Override
+    public void deleteProduct(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        Product p = this.getProductById(id);
+        s.remove(p);
+    }
 }
