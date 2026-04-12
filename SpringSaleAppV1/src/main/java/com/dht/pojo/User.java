@@ -5,6 +5,7 @@
 package com.dht.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -62,7 +63,7 @@ public class User implements Serializable {
     private String username;
     @Basic(optional = false)
     @Column(name = "password")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @Column(name = "active")
     private Boolean active;
