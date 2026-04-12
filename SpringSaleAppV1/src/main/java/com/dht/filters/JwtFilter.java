@@ -20,7 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  * @author huu-thanhduong
  */
-public class JwtFilter implements Filter{
+public class JwtFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -28,7 +28,6 @@ public class JwtFilter implements Filter{
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         
         if (httpRequest.getRequestURI().startsWith(String.format("%s/api/secure", httpRequest.getContextPath())) == true) {
-        
            
             String header = httpRequest.getHeader("Authorization");
             
