@@ -62,6 +62,11 @@ public class ProductRepositoryImpl implements ProductRepository {
             if (toPrice != null && !toPrice.isEmpty()) {
                 predicates.add(b.lessThanOrEqualTo(root.get("price"), toPrice));
             }
+            
+            String cateId = params.get("cateId");
+            if (cateId != null && !cateId.isEmpty()) {
+                predicates.add(b.equal(root.get("categoryId").as(Integer.class), cateId));
+            }
 
             q.where(predicates.toArray(Predicate[]::new));
         }
