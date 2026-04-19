@@ -32,4 +32,25 @@ public class ApiUserController {
         User u = this.userService.addUser(info, avatar);
         return new ResponseEntity<>(u, HttpStatus.CREATED);
     }
+    
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User u) {
+
+        if (this.userService.authenticate(u.getUsername(), u.getPassword())) {
+            try {
+                String token = JwtUtils.generateToken(u.getUsername());
+                return ResponseEntity.ok().body(Collections.singletonMap("token", token));
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body("Lỗi khi tạo JWT");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sai thông tin đăng nhập");
+    }
+
+    @RequestMapping("/secure/profile")
+    @ResponseBody
+    @CrossOrigin
+    public ResponseEntity<User> getProfile(Principal principal) {
+        return new ResponseEntity<>(this.userService.getUserByUsername(principal.getName()), HttpStatus.OK);
+    }
 }
