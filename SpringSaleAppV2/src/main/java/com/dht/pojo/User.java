@@ -39,7 +39,7 @@ import java.util.Set;
     @NamedQuery(name = "User.findByUserRole", query = "SELECT u FROM User u WHERE u.userRole = :userRole"),
     @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar")})
 @JsonIgnoreProperties(value = {
-    "saleOrderSet", "password", "commentSet"
+    "saleOrderSet", "commentSet"
 })
 public class User implements Serializable {
 
