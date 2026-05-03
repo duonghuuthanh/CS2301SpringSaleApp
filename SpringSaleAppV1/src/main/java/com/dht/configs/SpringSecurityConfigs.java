@@ -4,7 +4,6 @@
  */
 package com.dht.configs;
 
-import com.cloudinary.Api.HttpMethod;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import java.util.List;
@@ -54,7 +53,8 @@ public class SpringSecurityConfigs {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(c -> c.disable()).authorizeHttpRequests((requests) -> requests
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(c -> c.disable()).authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/", "/admin").hasRole("ADMIN")
                 .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
@@ -80,7 +80,6 @@ public class SpringSecurityConfigs {
     
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of("http://localhost:3000/")); 

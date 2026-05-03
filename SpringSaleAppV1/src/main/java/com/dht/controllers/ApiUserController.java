@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class ApiUserController {
     @Autowired
     private UserService userService;
@@ -59,7 +60,6 @@ public class ApiUserController {
 
     @RequestMapping("/secure/profile")
     @ResponseBody
-    @CrossOrigin
     public ResponseEntity<User> getProfile(Principal principal) {
         return new ResponseEntity<>(this.userService.getUserByUsername(principal.getName()), HttpStatus.OK);
     }
