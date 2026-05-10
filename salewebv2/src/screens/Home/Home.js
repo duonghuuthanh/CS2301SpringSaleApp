@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MySpinner from "../../components/MySpinner";
 import Apis, { endpoints } from "../../configs/Apis";
 import { Alert, Button, Card, Col, Row } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
+import cookies from 'react-cookies'
+import { MyCartContext } from "../../configs/Contexts";
 
 const Home = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [q] = useSearchParams();
+    const [, dispatch] = useContext(MyCartContext);
 
     const loadProducts = async () => {
         try {
@@ -55,6 +58,29 @@ const Home = () => {
             setPage(page + 1);
     }
 
+    const order = (p) => {
+        let cart = cookies.load('cart') || null;
+        if (cart === null)
+            cart = {}
+
+        if (p.id in cart) {
+            cart[p.id]['quantity']++;
+        } else {
+            cart[p.id] = {
+                'id': p.id,
+                'name': p.name,
+                'price': p.price,
+                'quantity': 1
+            }
+        }
+
+        cookies.save('cart', cart);
+
+        dispatch({
+            'type': 'UPDATE'
+        })
+    }
+
     return (
         <>
             {products.length === 0 && <Alert variant="warning" className="mt-2">KHÔNG có sản phẩm nào!</Alert>}
@@ -66,7 +92,7 @@ const Home = () => {
                             <Card.Body>
                                 <Card.Title>{p.name}</Card.Title>
                                 <Card.Text>{p.price.toLocaleString()} VNĐ</Card.Text>
-                                <Button variant="danger" className="me-1">Đặt hàng</Button>
+                                <Button variant="danger" className="me-1" onClick={() => order(p)}>Đặt hàng</Button>
                                 <Button variant="info">Xem chi tiết</Button>
                             </Card.Body>
                         </Card>

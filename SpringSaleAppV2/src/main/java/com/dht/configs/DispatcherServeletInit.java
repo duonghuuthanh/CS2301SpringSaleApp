@@ -39,7 +39,7 @@ public class DispatcherServeletInit extends AbstractAnnotationConfigDispatcherSe
 
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-        registration.setMultipartConfig(new MultipartConfigElement("/tmp", 5000000, 15000000, 0));
+        registration.setMultipartConfig(new MultipartConfigElement("/", 5000000, 15000000, 0));
     }
     
     @Override
