@@ -56,6 +56,10 @@ public class ApiUserController {
 
     @RequestMapping("/secure/profile")
     @ResponseBody
+<<<<<<< Updated upstream
+=======
+    @CrossOrigin
+>>>>>>> Stashed changes
     public ResponseEntity<User> getProfile(Principal principal) {
         return new ResponseEntity<>(this.userService.getUserByUsername(principal.getName()), HttpStatus.OK);
     }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -36,6 +37,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
             "com.dht.service"
         }
 )
+@Order(2)
 public class SpringSecurityConfigs {
 
     @Autowired
@@ -53,8 +55,8 @@ public class SpringSecurityConfigs {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(c -> c.disable()).authorizeHttpRequests((requests) -> requests
+        http.securityMatcher("/admin/**", "/**").csrf(c -> c.disable()).authorizeHttpRequests((requests) -> requests
+
                 .requestMatchers("/", "/admin").hasRole("ADMIN")
                 .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
@@ -64,6 +66,17 @@ public class SpringSecurityConfigs {
                 .failureUrl("/admin/login?error=true") // Chuyển hướng khi thất bại
                 .permitAll()
         ).logout((logout) -> logout.logoutSuccessUrl("/admin/login").permitAll());
+        
+//        http.cors(cors -> cors.configurationSource(corsConfigurationSource())).csrf(c -> c.disable()).authorizeHttpRequests((requests) -> requests
+//                .requestMatchers("/", "/admin").hasRole("ADMIN")
+//                .requestMatchers("/api/**").permitAll()
+//                .anyRequest().authenticated()
+//        ).formLogin(form -> form.loginPage("/admin/login") // Đường dẫn tới trang đăng nhập
+//                .loginProcessingUrl("/login") // Đường dẫn xử lý POST
+//                .defaultSuccessUrl("/", true) // Chuyển hướng khi thành công
+//                .failureUrl("/admin/login?error=true") // Chuyển hướng khi thất bại
+//                .permitAll()
+//        ).logout((logout) -> logout.logoutSuccessUrl("/admin/login").permitAll());
         return http.build();
     }
 
@@ -78,19 +91,19 @@ public class SpringSecurityConfigs {
         return cloudinary;
     }
     
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-
-        config.setAllowedOrigins(List.of("http://localhost:3000/")); 
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        config.setExposedHeaders(List.of("Authorization"));
-        config.setAllowCredentials(true); 
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-
-        return source;
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration config = new CorsConfiguration();
+//
+//        config.setAllowedOrigins(List.of("http://localhost:3000")); 
+//        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+//        config.setExposedHeaders(List.of("Authorization"));
+//        config.setAllowCredentials(true); 
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", config);
+//
+//        return source;
+//    }
 }
