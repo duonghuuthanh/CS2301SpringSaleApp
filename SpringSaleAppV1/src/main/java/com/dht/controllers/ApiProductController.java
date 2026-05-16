@@ -36,6 +36,11 @@ public class ApiProductController {
         return new ResponseEntity<>(this.prodService.getProducts(params), HttpStatus.OK);
     }
     
+    @GetMapping("/products/{productId}")
+    public ResponseEntity<Product> details(@PathVariable(value = "productId") int id) {
+        return new ResponseEntity<>(this.prodService.getProductById(id), HttpStatus.OK);
+    }
+    
     @DeleteMapping("/products/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable(value = "productId") int id) {

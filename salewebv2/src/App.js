@@ -11,6 +11,7 @@ import { useReducer } from "react";
 import MyUserReducer from "./reducers/MyUserReducer";
 import Cart from "./screens/Cart/Cart";
 import MyCartReducer from "./reducers/MyCartReducer";
+import ProductDetails from "./screens/Home/ProductDetails";
 
 const App = () => {
   const [user, disptach] = useReducer(MyUserReducer, null);
@@ -28,6 +29,7 @@ const App = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/products/:productId" element={<ProductDetails />} />
             </Routes>
           </Container>
 
