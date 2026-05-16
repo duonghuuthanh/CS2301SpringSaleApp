@@ -6,9 +6,14 @@ package com.dht.service.impl;
 
 import com.dht.pojo.Comment;
 import com.dht.repository.CommentRepository;
+import com.dht.repository.ProductRepository;
+import com.dht.repository.UserRepository;
 import com.dht.service.CommentService;
+import com.dht.service.UserService;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,6 +24,10 @@ import org.springframework.stereotype.Service;
 public class CommentServiceImpl implements CommentService {
     @Autowired
     private CommentRepository commentRepo;
+    @Autowired
+    private UserRepository userRepo;
+    @Autowired
+    private ProductRepository prodRepo;
 
     @Override
     public List<Comment> getComments(int productId) {
@@ -26,7 +35,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment addComment(Comment c) {
+    public Comment addComment(int productId, String content) {
+        Comment c = new Comment();
+        c.setContent(content);
+        c.setCreatedDate(new Date());
+        c.setUserId(this.userRepo.getUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        c.setProductId(this.prodRepo.getProductById(productId));
+        
         return this.commentRepo.addComment(c);
     }
     

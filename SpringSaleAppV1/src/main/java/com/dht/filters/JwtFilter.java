@@ -13,14 +13,19 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  *
  * @author huu-thanhduong
  */
 public class JwtFilter implements Filter {
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -41,6 +46,7 @@ public class JwtFilter implements Filter {
                     String username = JwtUtils.validateTokenAndGetUsername(token);
                     if (username != null) {
                         httpRequest.setAttribute("username", username);
+                        
                         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, null);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                         
@@ -48,6 +54,7 @@ public class JwtFilter implements Filter {
                         return;
                     }
                 } catch (Exception e) {
+                    System.err.println(e.getMessage());
                     // Log lỗi
                 }
             }

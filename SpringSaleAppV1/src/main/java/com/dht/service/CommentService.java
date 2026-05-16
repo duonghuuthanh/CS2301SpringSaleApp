@@ -13,5 +13,5 @@ import java.util.List;
  */
 public interface CommentService {
     List<Comment> getComments(int productId);
-    Comment addComment(Comment c);
+    Comment addComment(int productId, String content);
 }
